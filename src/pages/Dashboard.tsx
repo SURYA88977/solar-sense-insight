@@ -44,19 +44,19 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-800">Solar Dashboard</h1>
-        <div className="text-sm text-gray-600">
+        <h1 className="text-3xl font-bold text-[#4B352A]">Solar Dashboard</h1>
+        <div className="text-sm text-[#4B352A]/70">
           Last updated: {currentTime.toLocaleTimeString()}
         </div>
       </div>
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
+        <Card className="text-white" style={{ background: 'linear-gradient(to right, #CA7842, #B2CD9C)' }}>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-yellow-100">Current Solar</p>
+                <p className="text-[#F0F2BD]">Current Solar</p>
                 <p className="text-2xl font-bold">{currentSolar} kW</p>
               </div>
               <Sun className="h-8 w-8" />
@@ -64,11 +64,11 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+        <Card className="text-white" style={{ background: 'linear-gradient(to right, #4B352A, #CA7842)' }}>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100">Current Usage</p>
+                <p className="text-[#F0F2BD]">Current Usage</p>
                 <p className="text-2xl font-bold">{currentUsage} kW</p>
               </div>
               <Zap className="h-8 w-8" />
@@ -76,23 +76,23 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white">
+        <Card className="text-white" style={{ background: 'linear-gradient(to right, #B2CD9C, #F0F2BD)' }}>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-green-100">Battery Level</p>
-                <p className="text-2xl font-bold">{batteryLevel}%</p>
+                <p className="text-[#4B352A]">Battery Level</p>
+                <p className="text-2xl font-bold text-[#4B352A]">{batteryLevel}%</p>
               </div>
-              <Battery className="h-8 w-8" />
+              <Battery className="h-8 w-8 text-[#4B352A]" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-r from-teal-500 to-teal-600 text-white">
+        <Card className="text-white" style={{ background: 'linear-gradient(to right, #CA7842, #4B352A)' }}>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-teal-100">Net Production</p>
+                <p className="text-[#F0F2BD]">Net Production</p>
                 <p className="text-2xl font-bold">+{(currentSolar - currentUsage).toFixed(1)} kW</p>
               </div>
               <TrendingUp className="h-8 w-8" />
@@ -103,37 +103,37 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Solar Generation Chart */}
-        <Card className="lg:col-span-2">
+        <Card className="lg:col-span-2 bg-[#F0F2BD]/50 border-[#B2CD9C]">
           <CardHeader>
-            <CardTitle>Solar Generation vs Usage</CardTitle>
+            <CardTitle className="text-[#4B352A]">Solar Generation vs Usage</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={solarData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="time" />
-                <YAxis />
+                <CartesianGrid strokeDasharray="3 3" stroke="#B2CD9C" />
+                <XAxis dataKey="time" stroke="#4B352A" />
+                <YAxis stroke="#4B352A" />
                 <Tooltip />
-                <Line type="monotone" dataKey="solar" stroke="#10b981" strokeWidth={3} name="Solar Generation (kW)" />
-                <Line type="monotone" dataKey="usage" stroke="#3b82f6" strokeWidth={3} name="Energy Usage (kW)" />
+                <Line type="monotone" dataKey="solar" stroke="#B2CD9C" strokeWidth={3} name="Solar Generation (kW)" />
+                <Line type="monotone" dataKey="usage" stroke="#CA7842" strokeWidth={3} name="Energy Usage (kW)" />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
         {/* AI Suggestions */}
-        <Card>
+        <Card className="bg-[#F0F2BD]/50 border-[#B2CD9C]">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Lightbulb className="h-5 w-5 text-yellow-500" />
+            <CardTitle className="flex items-center gap-2 text-[#4B352A]">
+              <Lightbulb className="h-5 w-5 text-[#CA7842]" />
               Smart Suggestions
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {suggestions.map((suggestion, index) => (
-                <div key={index} className="p-3 bg-gradient-to-r from-teal-50 to-blue-50 rounded-lg border border-teal-200">
-                  <p className="text-sm text-gray-700">{suggestion}</p>
+                <div key={index} className="p-3 bg-[#B2CD9C]/30 rounded-lg border border-[#B2CD9C]">
+                  <p className="text-sm text-[#4B352A]">{suggestion}</p>
                 </div>
               ))}
             </div>
@@ -142,19 +142,19 @@ const Dashboard = () => {
       </div>
 
       {/* Energy Flow */}
-      <Card>
+      <Card className="bg-[#F0F2BD]/50 border-[#B2CD9C]">
         <CardHeader>
-          <CardTitle>Today's Energy Flow</CardTitle>
+          <CardTitle className="text-[#4B352A]">Today's Energy Flow</CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={200}>
             <AreaChart data={solarData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="time" />
-              <YAxis />
+              <CartesianGrid strokeDasharray="3 3" stroke="#B2CD9C" />
+              <XAxis dataKey="time" stroke="#4B352A" />
+              <YAxis stroke="#4B352A" />
               <Tooltip />
-              <Area type="monotone" dataKey="solar" stackId="1" stroke="#10b981" fill="#10b981" fillOpacity={0.6} />
-              <Area type="monotone" dataKey="usage" stackId="2" stroke="#ef4444" fill="#ef4444" fillOpacity={0.6} />
+              <Area type="monotone" dataKey="solar" stackId="1" stroke="#B2CD9C" fill="#B2CD9C" fillOpacity={0.6} />
+              <Area type="monotone" dataKey="usage" stackId="2" stroke="#CA7842" fill="#CA7842" fillOpacity={0.6} />
             </AreaChart>
           </ResponsiveContainer>
         </CardContent>

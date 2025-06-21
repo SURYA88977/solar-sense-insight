@@ -19,25 +19,25 @@ const Layout = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom right, #F0F2BD, #B2CD9C)' }}>
       {/* Mobile menu button */}
       <Button
         variant="outline"
         size="icon"
-        className="fixed top-4 left-4 z-50 md:hidden"
+        className="fixed top-4 left-4 z-50 md:hidden border-[#4B352A] text-[#4B352A] hover:bg-[#F0F2BD]"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
         {isSidebarOpen ? <X /> : <Menu />}
       </Button>
 
       {/* Sidebar */}
-      <div className={`fixed left-0 top-0 h-full w-64 bg-gradient-to-b from-teal-600 to-teal-800 text-white transform transition-transform duration-300 ease-in-out z-40 ${
+      <div className={`fixed left-0 top-0 h-full w-64 text-white transform transition-transform duration-300 ease-in-out z-40 ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } md:translate-x-0`}>
+      } md:translate-x-0`} style={{ background: 'linear-gradient(to bottom, #4B352A, #CA7842)' }}>
         <div className="p-6">
           <div className="flex items-center gap-2 mb-8">
-            <Sun className="h-8 w-8 text-yellow-400" />
-            <h1 className="text-2xl font-bold">SolarSense</h1>
+            <Sun className="h-8 w-8 text-[#F0F2BD]" />
+            <h1 className="text-2xl font-bold text-[#F0F2BD]">SolarSense</h1>
           </div>
           
           <nav className="space-y-2">
@@ -49,8 +49,8 @@ const Layout = () => {
                   to={item.path}
                   className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
                     isActive(item.path)
-                      ? 'bg-white/20 text-white'
-                      : 'text-teal-100 hover:bg-white/10 hover:text-white'
+                      ? 'bg-[#F0F2BD]/20 text-[#F0F2BD]'
+                      : 'text-[#B2CD9C] hover:bg-[#F0F2BD]/10 hover:text-[#F0F2BD]'
                   }`}
                   onClick={() => setIsSidebarOpen(false)}
                 >
