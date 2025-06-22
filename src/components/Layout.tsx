@@ -37,7 +37,7 @@ const Layout = () => {
         <div className="p-6">
           <div className="flex items-center gap-2 mb-8">
             <img 
-              src="/lovable-uploads/45028698-49ef-4e35-ad42-186e937fa9df.png" 
+              src="/lovable-uploads/be013ad3-8a41-4049-9cab-75044766642e.png" 
               alt="Solar Panel" 
               className="h-8 w-8"
             />
