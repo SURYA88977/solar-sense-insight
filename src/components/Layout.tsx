@@ -36,7 +36,11 @@ const Layout = () => {
       } md:translate-x-0`} style={{ background: 'linear-gradient(to bottom, #4B352A, #CA7842)' }}>
         <div className="p-6">
           <div className="flex items-center gap-2 mb-8">
-            <Sun className="h-8 w-8 text-[#F0F2BD]" />
+            <img 
+              src="/lovable-uploads/45028698-49ef-4e35-ad42-186e937fa9df.png" 
+              alt="Solar Panel" 
+              className="h-8 w-8"
+            />
             <h1 className="text-2xl font-bold text-[#F0F2BD]">SolarSense</h1>
           </div>
           
