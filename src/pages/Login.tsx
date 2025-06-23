@@ -29,7 +29,7 @@ const Login = () => {
               <img 
                 src="/lovable-uploads/db4e798f-0cd1-47e6-a79c-c508ee24c0bd.png" 
                 alt="Solar Sense Logo" 
-                className="h-8 w-8 object-contain"
+                className="h-12 w-12 object-contain"
               />
             </div>
           </div>
