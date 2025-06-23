@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sun, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -26,7 +26,11 @@ const Login = () => {
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
             <div className="p-3 rounded-full" style={{ background: 'linear-gradient(to right, #CA7842, #B2CD9C)' }}>
-              <Sun className="h-8 w-8 text-white" />
+              <img 
+                src="/lovable-uploads/db4e798f-0cd1-47e6-a79c-c508ee24c0bd.png" 
+                alt="Solar Sense Logo" 
+                className="h-8 w-8 object-contain"
+              />
             </div>
           </div>
           <CardTitle className="text-2xl font-bold text-[#4B352A]">Welcome to SolarSense</CardTitle>
