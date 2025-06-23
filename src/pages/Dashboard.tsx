@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
@@ -44,7 +43,10 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-[#4B352A]">Solar Dashboard</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-[#4B352A]">Solar Dashboard</h1>
+          <Sun className="h-8 w-8 text-[#CA7842] animate-spin" style={{ animationDuration: '8s' }} />
+        </div>
         <div className="text-sm text-[#4B352A]/70">
           Last updated: {currentTime.toLocaleTimeString()}
         </div>
