@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Sun, BarChart3, Leaf, AlertTriangle, Settings, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import PageTransition from './PageTransition';
 
 const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -51,9 +52,9 @@ const Layout = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                  className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 ${
                     isActive(item.path)
-                      ? 'bg-[#F0F2BD]/20 text-[#F0F2BD]'
+                      ? 'bg-[#F0F2BD]/20 text-[#F0F2BD] scale-105'
                       : 'text-[#B2CD9C] hover:bg-[#F0F2BD]/10 hover:text-[#F0F2BD]'
                   }`}
                   onClick={() => setIsSidebarOpen(false)}
@@ -70,7 +71,7 @@ const Layout = () => {
       {/* Overlay for mobile */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/50 z-30 md:hidden transition-opacity duration-300"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -78,7 +79,9 @@ const Layout = () => {
       {/* Main content */}
       <div className="md:ml-64 min-h-screen">
         <main className="p-6">
-          <Outlet />
+          <PageTransition>
+            <Outlet />
+          </PageTransition>
         </main>
       </div>
     </div>
