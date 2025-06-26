@@ -17,11 +17,10 @@ const Layout = () => {
     { path: '/emergency', label: 'Emergency', icon: AlertTriangle },
   ];
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path) => location.pathname === path;
 
   return (
     <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom right, #F0F2BD, #B2CD9C)' }}>
-      {/* Mobile menu button */}
       <Button
         variant="outline"
         size="icon"
@@ -31,7 +30,6 @@ const Layout = () => {
         {isSidebarOpen ? <X /> : <Menu />}
       </Button>
 
-      {/* Sidebar */}
       <div className={`fixed left-0 top-0 h-full w-64 text-white transform transition-transform duration-300 ease-in-out z-40 ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } md:translate-x-0`} style={{ background: 'linear-gradient(to bottom, #4B352A, #CA7842)' }}>
@@ -68,7 +66,6 @@ const Layout = () => {
         </div>
       </div>
 
-      {/* Overlay for mobile */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-30 md:hidden transition-opacity duration-300"
@@ -76,7 +73,6 @@ const Layout = () => {
         />
       )}
 
-      {/* Main content */}
       <div className="md:ml-64 min-h-screen">
         <main className="p-6">
           <PageTransition>

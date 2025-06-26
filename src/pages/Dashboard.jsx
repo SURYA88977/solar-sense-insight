@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
@@ -18,7 +19,6 @@ const Dashboard = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
-      // Simulate real-time data updates
       setSolarData(prev => prev.map(item => ({
         ...item,
         solar: Math.max(0, item.solar + (Math.random() - 0.5) * 0.2),

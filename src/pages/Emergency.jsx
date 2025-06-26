@@ -6,28 +6,17 @@ import { Badge } from '@/components/ui/badge';
 import { AlertTriangle, CheckCircle, Bell, Power, Battery, Sun } from 'lucide-react';
 import { toast } from 'sonner';
 
-interface EmergencyAlert {
-  id: string;
-  type: 'critical' | 'warning' | 'info';
-  message: string;
-  time: string;
-  source: 'solar_panel' | 'battery' | 'inverter' | 'grid';
-  severity: 'high' | 'medium' | 'low';
-}
-
 const Emergency = () => {
   const [emergencyActive, setEmergencyActive] = useState(false);
   const [systemStatus, setSystemStatus] = useState('normal');
-  const [currentAlerts, setCurrentAlerts] = useState<EmergencyAlert[]>([]);
+  const [currentAlerts, setCurrentAlerts] = useState([]);
 
   useEffect(() => {
-    // Load simulated emergency alerts from solar panels
     const alerts = simulateEmergencyAlerts();
     setCurrentAlerts(alerts);
 
-    // Simulate receiving new alerts every 30 seconds
     const alertInterval = setInterval(() => {
-      const newAlert: EmergencyAlert = {
+      const newAlert = {
         id: Date.now().toString(),
         type: Math.random() > 0.7 ? 'critical' : 'warning',
         message: `Solar panel system alert: ${Math.random() > 0.5 ? 'Low battery level detected' : 'Panel efficiency below threshold'}`,
@@ -46,8 +35,8 @@ const Emergency = () => {
     return () => clearInterval(alertInterval);
   }, []);
 
-  const simulateEmergencyAlerts = (): EmergencyAlert[] => {
-    const alerts: EmergencyAlert[] = [
+  const simulateEmergencyAlerts = () => {
+    const alerts = [
       {
         id: '1',
         type: 'critical',
@@ -89,8 +78,7 @@ const Emergency = () => {
     setEmergencyActive(true);
     setSystemStatus('emergency');
     
-    // Add emergency alert
-    const emergencyAlert: EmergencyAlert = {
+    const emergencyAlert = {
       id: 'emergency-' + Date.now(),
       type: 'critical',
       message: 'Grid outage detected. System switched to battery backup mode. Monitor power consumption.',
@@ -102,7 +90,6 @@ const Emergency = () => {
     setCurrentAlerts(prev => [emergencyAlert, ...prev]);
     toast.success('Emergency simulation activated (Frontend only)');
     
-    // Reset after 10 seconds for demo
     setTimeout(() => {
       setEmergencyActive(false);
       setSystemStatus('normal');
@@ -142,7 +129,7 @@ const Emergency = () => {
     }
   ];
 
-  const getAlertIcon = (type: string) => {
+  const getAlertIcon = (type) => {
     switch (type) {
       case 'critical':
         return <AlertTriangle className="h-5 w-5 text-red-500" />;
@@ -153,7 +140,7 @@ const Emergency = () => {
     }
   };
 
-  const getAlertBadge = (type: string) => {
+  const getAlertBadge = (type) => {
     switch (type) {
       case 'critical':
         return <Badge variant="destructive">Critical</Badge>;
@@ -164,7 +151,7 @@ const Emergency = () => {
     }
   };
 
-  const getAlertBackground = (type: string) => {
+  const getAlertBackground = (type) => {
     switch (type) {
       case 'critical':
         return 'bg-red-100 border-red-300';
