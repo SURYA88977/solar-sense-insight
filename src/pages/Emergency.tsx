@@ -3,20 +3,31 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { AlertTriangle, CheckCircle, Bell, Power, Battery, Sun } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Bell, Power, Battery, Sun, MessageSquare } from 'lucide-react';
+import { whatsappService, type EmergencyAlert } from '@/services/whatsappService';
+import WhatsAppConfig from '@/components/WhatsAppConfig';
 import { toast } from 'sonner';
 
 const Emergency = () => {
   const [emergencyActive, setEmergencyActive] = useState(false);
   const [systemStatus, setSystemStatus] = useState('normal');
-  const [currentAlerts, setCurrentAlerts] = useState([]);
+  const [whatsappConfigured, setWhatsappConfigured] = useState(false);
+  const [currentAlerts, setCurrentAlerts] = useState<EmergencyAlert[]>([]);
+  const [showWhatsAppConfig, setShowWhatsAppConfig] = useState(false);
 
   useEffect(() => {
-    const alerts = simulateEmergencyAlerts();
+    // Check if WhatsApp is configured
+    const apiKey = localStorage.getItem('whatsapp_api_key');
+    const phoneNumberId = localStorage.getItem('whatsapp_phone_number_id');
+    setWhatsappConfigured(!!(apiKey && phoneNumberId));
+
+    // Load simulated emergency alerts from solar panels
+    const alerts = whatsappService.simulateEmergencyAlerts();
     setCurrentAlerts(alerts);
 
+    // Simulate receiving new alerts every 30 seconds
     const alertInterval = setInterval(() => {
-      const newAlert = {
+      const newAlert: EmergencyAlert = {
         id: Date.now().toString(),
         type: Math.random() > 0.7 ? 'critical' : 'warning',
         message: `Solar panel system alert: ${Math.random() > 0.5 ? 'Low battery level detected' : 'Panel efficiency below threshold'}`,
@@ -26,59 +37,26 @@ const Emergency = () => {
       };
 
       setCurrentAlerts(prev => [newAlert, ...prev.slice(0, 4)]);
-      
-      if (newAlert.type === 'critical') {
-        toast.success('Emergency alert generated (Frontend only)');
+
+      // Send WhatsApp alert if configured and it's a critical alert
+      if (whatsappConfigured && newAlert.type === 'critical') {
+        const recipientNumber = localStorage.getItem('whatsapp_recipient');
+        if (recipientNumber) {
+          whatsappService.sendEmergencyAlert(newAlert, recipientNumber);
+          toast.success('Emergency alert sent via WhatsApp');
+        }
       }
     }, 30000);
 
     return () => clearInterval(alertInterval);
-  }, []);
-
-  const simulateEmergencyAlerts = () => {
-    const alerts = [
-      {
-        id: '1',
-        type: 'critical',
-        message: 'Battery level critically low (5%). Immediate attention required.',
-        time: 'Just now',
-        source: 'battery',
-        severity: 'high'
-      },
-      {
-        id: '2',
-        type: 'warning',
-        message: 'Panel 3 efficiency dropped to 65%. Possible obstruction detected.',
-        time: '3 minutes ago',
-        source: 'solar_panel',
-        severity: 'medium'
-      },
-      {
-        id: '3',
-        type: 'critical',
-        message: 'Inverter temperature exceeding safe limits (85°C).',
-        time: '5 minutes ago',
-        source: 'inverter',
-        severity: 'high'
-      },
-      {
-        id: '4',
-        type: 'warning',
-        message: 'Grid voltage fluctuation detected. Monitor closely.',
-        time: '10 minutes ago',
-        source: 'grid',
-        severity: 'medium'
-      }
-    ];
-
-    return alerts;
-  };
+  }, [whatsappConfigured]);
 
   const simulateEmergency = () => {
     setEmergencyActive(true);
     setSystemStatus('emergency');
     
-    const emergencyAlert = {
+    // Add emergency alert
+    const emergencyAlert: EmergencyAlert = {
       id: 'emergency-' + Date.now(),
       type: 'critical',
       message: 'Grid outage detected. System switched to battery backup mode. Monitor power consumption.',
@@ -88,12 +66,45 @@ const Emergency = () => {
     };
 
     setCurrentAlerts(prev => [emergencyAlert, ...prev]);
-    toast.success('Emergency simulation activated (Frontend only)');
+
+    // Send WhatsApp alert if configured
+    if (whatsappConfigured) {
+      const recipientNumber = localStorage.getItem('whatsapp_recipient');
+      if (recipientNumber) {
+        whatsappService.sendEmergencyAlert(emergencyAlert, recipientNumber);
+        toast.success('Emergency alert sent via WhatsApp');
+      }
+    }
     
+    // Reset after 10 seconds for demo
     setTimeout(() => {
       setEmergencyActive(false);
       setSystemStatus('normal');
     }, 10000);
+  };
+
+  const sendTestWhatsAppAlert = async () => {
+    const recipientNumber = localStorage.getItem('whatsapp_recipient');
+    if (!recipientNumber) {
+      toast.error('Please configure WhatsApp settings first');
+      return;
+    }
+
+    const testAlert: EmergencyAlert = {
+      id: 'test-' + Date.now(),
+      type: 'info',
+      message: 'This is a test alert from your SolarSense system.',
+      time: new Date().toLocaleTimeString(),
+      source: 'solar_panel',
+      severity: 'low'
+    };
+
+    const success = await whatsappService.sendEmergencyAlert(testAlert, recipientNumber);
+    if (success) {
+      toast.success('Test WhatsApp alert sent successfully');
+    } else {
+      toast.error('Failed to send WhatsApp alert. Please check your configuration.');
+    }
   };
 
   const emergencyProcedures = [
@@ -129,7 +140,7 @@ const Emergency = () => {
     }
   ];
 
-  const getAlertIcon = (type) => {
+  const getAlertIcon = (type: string) => {
     switch (type) {
       case 'critical':
         return <AlertTriangle className="h-5 w-5 text-red-500" />;
@@ -140,7 +151,7 @@ const Emergency = () => {
     }
   };
 
-  const getAlertBadge = (type) => {
+  const getAlertBadge = (type: string) => {
     switch (type) {
       case 'critical':
         return <Badge variant="destructive">Critical</Badge>;
@@ -151,7 +162,7 @@ const Emergency = () => {
     }
   };
 
-  const getAlertBackground = (type) => {
+  const getAlertBackground = (type: string) => {
     switch (type) {
       case 'critical':
         return 'bg-red-100 border-red-300';
@@ -166,8 +177,60 @@ const Emergency = () => {
     <div className="space-y-6">
       <div className="text-center">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">Emergency Management</h1>
-        <p className="text-lg text-gray-600">System alerts and emergency procedures (Frontend Demo)</p>
+        <p className="text-lg text-gray-600">System alerts and emergency procedures with WhatsApp notifications</p>
       </div>
+
+      {/* WhatsApp Configuration */}
+      {showWhatsAppConfig && (
+        <WhatsAppConfig onConfigured={() => {
+          setWhatsappConfigured(true);
+          setShowWhatsAppConfig(false);
+        }} />
+      )}
+
+      {/* WhatsApp Status */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <MessageSquare className={`h-6 w-6 ${whatsappConfigured ? 'text-green-500' : 'text-gray-400'}`} />
+              <div>
+                <h3 className="font-semibold">WhatsApp Alerts</h3>
+                <p className={`text-sm ${whatsappConfigured ? 'text-green-600' : 'text-gray-600'}`}>
+                  {whatsappConfigured ? 'Configured and active' : 'Not configured'}
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              {!whatsappConfigured ? (
+                <Button 
+                  onClick={() => setShowWhatsAppConfig(true)}
+                  variant="outline"
+                >
+                  Configure WhatsApp
+                </Button>
+              ) : (
+                <>
+                  <Button 
+                    onClick={sendTestWhatsAppAlert}
+                    variant="outline"
+                    size="sm"
+                  >
+                    Send Test Alert
+                  </Button>
+                  <Button 
+                    onClick={() => setShowWhatsAppConfig(true)}
+                    variant="ghost"
+                    size="sm"
+                  >
+                    Settings
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Emergency Status */}
       <Card className={`${emergencyActive ? 'border-red-500 bg-red-50' : 'border-green-500 bg-green-50'} transition-all duration-300`}>
@@ -255,9 +318,11 @@ const Emergency = () => {
           <CardTitle className="flex items-center gap-2">
             <Bell className="h-5 w-5" />
             Current Alerts from Solar Panel System
-            <Badge className="bg-blue-100 text-blue-800 ml-2">
-              Frontend Demo
-            </Badge>
+            {whatsappConfigured && (
+              <Badge className="bg-green-100 text-green-800 ml-2">
+                WhatsApp Enabled
+              </Badge>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -277,9 +342,12 @@ const Emergency = () => {
                 <p className="text-gray-700 mt-2">{alert.message}</p>
                 <div className="flex items-center justify-between mt-2">
                   <p className="text-sm text-gray-600">{alert.time}</p>
-                  <Badge className="bg-gray-100 text-gray-800">
-                    Simulated Alert
-                  </Badge>
+                  {whatsappConfigured && alert.type === 'critical' && (
+                    <Badge className="bg-blue-100 text-blue-800">
+                      <MessageSquare className="h-3 w-3 mr-1" />
+                      Sent via WhatsApp
+                    </Badge>
+                  )}
                 </div>
               </div>
             ))}
