@@ -16,7 +16,7 @@ const Layout = () => {
     { path: '/emergency', label: 'Emergency', icon: AlertTriangle },
   ];
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom right, #F0F2BD, #B2CD9C)' }}>

@@ -7,7 +7,11 @@ import { Label } from '@/components/ui/label';
 import { whatsappService } from '@/services/whatsappService';
 import { toast } from 'sonner';
 
-const WhatsAppConfig = ({ onConfigured }) => {
+interface WhatsAppConfigProps {
+  onConfigured: () => void;
+}
+
+const WhatsAppConfig = ({ onConfigured }: WhatsAppConfigProps) => {
   const [apiKey, setApiKey] = useState(localStorage.getItem('whatsapp_api_key') || '');
   const [phoneNumberId, setPhoneNumberId] = useState(localStorage.getItem('whatsapp_phone_number_id') || '');
   const [recipientNumber, setRecipientNumber] = useState(localStorage.getItem('whatsapp_recipient') || '');
