@@ -1,11 +1,7 @@
 
 import { ReactNode } from 'react';
 
-interface PageTransitionProps {
-  children: ReactNode;
-}
-
-const PageTransition = ({ children }: PageTransitionProps) => {
+const PageTransition = ({ children }) => {
   return (
     <div className="animate-fade-in">
       {children}
