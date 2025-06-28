@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Sun, BarChart3, Leaf, AlertTriangle, Settings, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import PageTransition from './PageTransition';
 
 const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -17,7 +16,7 @@ const Layout = () => {
     { path: '/emergency', label: 'Emergency', icon: AlertTriangle },
   ];
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <div className="min-h-screen" style={{ background: 'linear-gradient(to bottom right, #F0F2BD, #B2CD9C)' }}>
@@ -52,9 +51,9 @@ const Layout = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 ${
+                  className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
                     isActive(item.path)
-                      ? 'bg-[#F0F2BD]/20 text-[#F0F2BD] scale-105'
+                      ? 'bg-[#F0F2BD]/20 text-[#F0F2BD]'
                       : 'text-[#B2CD9C] hover:bg-[#F0F2BD]/10 hover:text-[#F0F2BD]'
                   }`}
                   onClick={() => setIsSidebarOpen(false)}
@@ -71,7 +70,7 @@ const Layout = () => {
       {/* Overlay for mobile */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 md:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -79,9 +78,7 @@ const Layout = () => {
       {/* Main content */}
       <div className="md:ml-64 min-h-screen">
         <main className="p-6">
-          <PageTransition>
-            <Outlet />
-          </PageTransition>
+          <Outlet />
         </main>
       </div>
     </div>
