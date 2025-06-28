@@ -51,7 +51,7 @@ const Layout = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                  className={`flex items-center gap-3 p-3 rounded-lg transition-colors relative z-30 ${
                     isActive(item.path)
                       ? 'bg-[#F0F2BD]/20 text-[#F0F2BD]'
                       : 'text-[#B2CD9C] hover:bg-[#F0F2BD]/10 hover:text-[#F0F2BD]'
@@ -76,8 +76,8 @@ const Layout = () => {
       )}
 
       {/* Main content */}
-      <div className="md:ml-64 min-h-screen">
-        <main className="p-6">
+      <div className="md:ml-64 min-h-screen relative">
+        <main className="p-6 relative z-10">
           <Outlet />
         </main>
       </div>

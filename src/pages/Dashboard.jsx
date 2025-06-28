@@ -42,7 +42,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 relative">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <h1 className="text-3xl font-bold text-[#4B352A]">Solar Dashboard</h1>
@@ -106,26 +106,35 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Solar Generation Chart */}
-        <Card className="lg:col-span-2 bg-[#F0F2BD]/50 border-[#B2CD9C]">
+        <Card className="lg:col-span-2 bg-[#F0F2BD]/50 border-[#B2CD9C] relative z-10">
           <CardHeader>
             <CardTitle className="text-[#4B352A]">Solar Generation vs Usage</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={solarData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#B2CD9C" />
-                <XAxis dataKey="time" stroke="#4B352A" />
-                <YAxis stroke="#4B352A" />
-                <Tooltip />
-                <Line type="monotone" dataKey="solar" stroke="#B2CD9C" strokeWidth={3} name="Solar Generation (kW)" />
-                <Line type="monotone" dataKey="usage" stroke="#CA7842" strokeWidth={3} name="Energy Usage (kW)" />
-              </LineChart>
-            </ResponsiveContainer>
+            <div className="w-full h-[300px] relative">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={solarData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#B2CD9C" />
+                  <XAxis dataKey="time" stroke="#4B352A" />
+                  <YAxis stroke="#4B352A" />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#F0F2BD', 
+                      border: '1px solid #B2CD9C',
+                      borderRadius: '8px',
+                      zIndex: 1000
+                    }} 
+                  />
+                  <Line type="monotone" dataKey="solar" stroke="#B2CD9C" strokeWidth={3} name="Solar Generation (kW)" />
+                  <Line type="monotone" dataKey="usage" stroke="#CA7842" strokeWidth={3} name="Energy Usage (kW)" />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
 
         {/* AI Suggestions */}
-        <Card className="bg-[#F0F2BD]/50 border-[#B2CD9C]">
+        <Card className="bg-[#F0F2BD]/50 border-[#B2CD9C] relative z-10">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-[#4B352A]">
               <Lightbulb className="h-5 w-5 text-[#CA7842]" />
@@ -145,21 +154,30 @@ const Dashboard = () => {
       </div>
 
       {/* Energy Flow */}
-      <Card className="bg-[#F0F2BD]/50 border-[#B2CD9C]">
+      <Card className="bg-[#F0F2BD]/50 border-[#B2CD9C] relative z-10">
         <CardHeader>
           <CardTitle className="text-[#4B352A]">Today's Energy Flow</CardTitle>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={200}>
-            <AreaChart data={solarData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#B2CD9C" />
-              <XAxis dataKey="time" stroke="#4B352A" />
-              <YAxis stroke="#4B352A" />
-              <Tooltip />
-              <Area type="monotone" dataKey="solar" stackId="1" stroke="#B2CD9C" fill="#B2CD9C" fillOpacity={0.6} />
-              <Area type="monotone" dataKey="usage" stackId="2" stroke="#CA7842" fill="#CA7842" fillOpacity={0.6} />
-            </AreaChart>
-          </ResponsiveContainer>
+          <div className="w-full h-[200px] relative">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={solarData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#B2CD9C" />
+                <XAxis dataKey="time" stroke="#4B352A" />
+                <YAxis stroke="#4B352A" />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: '#F0F2BD', 
+                    border: '1px solid #B2CD9C',
+                    borderRadius: '8px',
+                    zIndex: 1000
+                  }} 
+                />
+                <Area type="monotone" dataKey="solar" stackId="1" stroke="#B2CD9C" fill="#B2CD9C" fillOpacity={0.6} />
+                <Area type="monotone" dataKey="usage" stackId="2" stroke="#CA7842" fill="#CA7842" fillOpacity={0.6} />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </CardContent>
       </Card>
     </div>
